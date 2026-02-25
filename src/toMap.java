@@ -1,6 +1,7 @@
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 public class toMap {
   public static void main(String[] args) {
@@ -25,8 +26,64 @@ public class toMap {
     stringRoot.right.right = new TreeNode<>("am", null, null);
     stringRoot.right.right.right = new TreeNode<>("good", null, null);
 
-    // printGreater(root, 19);
-    System.out.println(toMap(stringRoot));
+    TreeNode<Integer> megaRoot = new TreeNode<Integer>(1, null, null);
+
+    TreeNode<Integer> current = megaRoot;
+
+    for(int i = 2; i <= Integer.MAX_VALUE; i++){
+      current.right = new TreeNode<Integer>(i, null, null);
+      current = current.right;
+    }
+    // System.out.println("Preorder recursive");
+    // preorder(root);
+    // System.out.println("Preorder iterative");
+    //  preOrderIter(root);
+    preOrderIter(megaRoot);
+
+    // System.out.println(toMap(stringRoot));
+  }
+
+  public static <T> void levelOrder(TreeNode<T> node){
+    Queue<TreeNode<T>> queue = new LinkedList<>();
+
+    queue.add(node);
+
+    while(!queue.isEmpty()){
+      TreeNode<T> current = queue.poll();
+
+      if(current == null){
+        continue;
+      }
+
+      System.out.print(current.value + " ");
+      queue.add(current.left);
+      queue.add(current.right);
+    }
+  }
+
+    public static void preorder(TreeNode<Integer> node){
+    if(node == null) return;
+    System.out.println(node.value);
+    preorder(node.left);
+    preorder(node.right);
+  }
+
+  public static <T> void preOrderIter(TreeNode<T> node){
+    Stack<TreeNode<T>> stack = new Stack<>();
+    stack.push(node);
+
+    while(!stack.isEmpty()){
+      TreeNode<T> current = stack.pop();
+
+      if(current == null){
+        continue;
+      }
+
+      System.out.println(current.value);
+      stack.push(current.right);
+      stack.push(current.left);
+      
+    }
   }
 
   public static <T> Map<T, Integer> toMap(TreeNode<T> node){
@@ -59,13 +116,6 @@ public class toMap {
     }
     printGreater(node.left,threshold);
     printGreater(node.right,threshold);
-  }
-
-  public static void preorder(TreeNode<Integer> node){
-    if(node == null) return;
-        System.out.println(node.value);
-    preorder(node.left);
-    preorder(node.right);
   }
 
   public static <T> void inorder(TreeNode<T> node){
